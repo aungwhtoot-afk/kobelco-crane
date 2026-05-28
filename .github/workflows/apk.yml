@@ -1,0 +1,33 @@
+name: Build Android APK
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Flet
+        run: pip install flet
+
+      - name: Build APK
+        run: yes | flet build apk --project crane_planner --product "Kobelco"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Crane-Planner-APK
+          path: build/apk/**/*.apk
