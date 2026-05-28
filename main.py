@@ -1,7 +1,7 @@
 import flet as ft
 import math
 
-# Kobelco RK250 Load Chart Data (မူရင်းလုပ်ဆောင်ချက်များနှင့် ဒေတာများ လုံးဝမပြောင်းလဲပါ)
+# Kobelco RK250 Load Chart Data (မူရင်းဒေတာများအတိုင်း အတိအကျဖြစ်ပါသည်)
 max_front_caps = {
     9.32:  {3.0: 25.0, 4.0: 23.0, 5.0: 19.4, 6.0: 16.3},
     16.42: {5.0: 16.7, 8.0: 10.9, 10.0: 7.4, 12.0: 5.45},
@@ -71,7 +71,6 @@ def get_safe_rad_and_cap(capacities, rad):
     return None, None
 
 def main(page: ft.Page):
-    # 🛠️ BLANK SCREEN PROTECTION: App ပွင့်ပွင့်ချင်း Crash ဖြစ်ပြီး Blank ပြတ်သွားခြင်းကို ဟန့်တားရန်
     try:
         page.title = "Kobelco Smart Planner"
         page.scroll = ft.ScrollMode.AUTO
@@ -215,10 +214,12 @@ def main(page: ft.Page):
         btn_manual_tab = ft.ElevatedButton("Manual Check", on_click=show_manual, bgcolor="#6c757d", color="white", expand=True)
         tab_btn_row = ft.Row([btn_auto_tab, btn_manual_tab], spacing=5)
 
-        # 📱 ခေါင်းစဉ်ကို Noti Bar အောက် သပ်သပ်ရပ်ရပ် ရောက်စေရန် SafeArea စနစ်သုံးထားသည်
+        # 📱 ခေါင်းစဉ်ကို Noti Bar အောက် ရောက်စေရန် အသေချာဆုံး Spacer စနစ် ပြောင်းလဲသုံးထားသည်
         header = ft.SafeArea(
-            content=ft.Text("Kobelco RK250 Lift Planner", size=22, weight=ft.FontWeight.BOLD, color="blue"),
-            minimum=ft.padding.only(top=15)
+            content=ft.Column([
+                ft.Container(height=15), # အပေါ်ကနေ နေရာလွတ် 15px တွန်းချပေးခြင်း
+                ft.Text("Kobelco RK250 Lift Planner", size=22, weight=ft.FontWeight.BOLD, color="blue")
+            ])
         )
 
         settings_section = ft.Container(
@@ -243,14 +244,12 @@ def main(page: ft.Page):
         page.update()
 
     except Exception as app_error:
-        # ဟာ့ဒ်ဝဲ သို့မဟုတ် စနစ်တစ်ခုခုကြောင့် အပလီကေးရှင်း စဖွင့်ချင်း Crash ဖြစ်လျှင် Error ကို စခရင်ပေါ်တွင် ပြပေးမည်
         page.controls.clear()
         page.add(
             ft.SafeArea(
                 content=ft.Column([
                     ft.Text("⚠️ App Startup Error:", size=20, color="red", weight=ft.FontWeight.BOLD),
                     ft.Text(str(app_error), size=14, color="black"),
-                    ft.Text("Please verify your main.py layout config.", size=12, italic=True)
                 ], spacing=10)
             )
         )
