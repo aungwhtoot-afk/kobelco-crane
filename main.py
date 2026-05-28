@@ -1,4 +1,4 @@
-import flet as ft
+import flet as ft  # စာလုံးအသေး ပြင်ဆင်ပြီး
 import math
 
 # Kobelco RK250 Load Chart Data (မူရင်းဒေတာများအတိုင်း အတိအကျဖြစ်ပါသည်)
@@ -77,15 +77,15 @@ def main(page: ft.Page):
         page.theme_mode = ft.ThemeMode.LIGHT
         page.padding = 15
 
-        # --- အခြေခံ သတ်မှတ်ချက်များ ဝင်စာကွက်များ ---
+        # --- အခြေခံ သတ်မှတ်ချက်များ ဝင်စာကွက်များ (ft.DropdownOption သို့ ပြင်ဆင်ပြီး) ---
         outrigger_dd = ft.Dropdown(
             label="Outrigger အကျယ်", 
-            options=[ft.dropdown.Option(x) for x in ["6.3", "5.9", "5.1", "3.8", "2.105"]], 
+            options=[ft.DropdownOption(x) for x in ["6.3", "5.9", "5.1", "3.8", "2.105"]], 
             value="6.3"
         )
         area_dd = ft.Dropdown(
             label="မချီမည့် ဧရိယာ", 
-            options=[ft.dropdown.Option(x) for x in ["360", "front", "side"]], 
+            options=[ft.DropdownOption(x) for x in ["360", "front", "side"]], 
             value="360"
         )
         parts_in = ft.TextField(label="ကြိုးအရေအတွက်", value="4", keyboard_type=ft.KeyboardType.NUMBER)
@@ -98,14 +98,14 @@ def main(page: ft.Page):
         # --- Manual Check Component များ ---
         t2_boom = ft.Dropdown(
             label="ထုတ်မည့် Boom အရှည် (m)", 
-            options=[ft.dropdown.Option(x) for x in ["9.32", "16.42", "23.52", "30.62"]], 
+            options=[ft.DropdownOption(x) for x in ["9.32", "16.42", "23.52", "30.62"]], 
             value="16.42"
         )
         t2_rad = ft.TextField(label="အကွာအဝေး Radius (m)", keyboard_type=ft.KeyboardType.NUMBER)
         t2_res = ft.Text("", size=14, weight=ft.FontWeight.BOLD)
 
         def check_errors():
-            area_val = area_dd.value.lower()
+            area_val = area_dd.value.lower() if area_dd.value else ""
             o_val = outrigger_dd.value
             if o_val == "6.3" and area_val != "360":
                 return "⚠️ Outrigger 6.3m တွင် '360' သာ ရွေးပါ။"
@@ -214,10 +214,10 @@ def main(page: ft.Page):
         btn_manual_tab = ft.ElevatedButton("Manual Check", on_click=show_manual, bgcolor="#6c757d", color="white", expand=True)
         tab_btn_row = ft.Row([btn_auto_tab, btn_manual_tab], spacing=5)
 
-        # 📱 ခေါင်းစဉ်ကို Noti Bar အောက် ရောက်စေရန် အသေချာဆုံး Spacer စနစ် ပြောင်းလဲသုံးထားသည်
+        # 📱 ခေါင်းစဉ်ကို Noti Bar အောက် ရောက်စေရန် Spacer စနစ်
         header = ft.SafeArea(
             content=ft.Column([
-                ft.Container(height=15), # အပေါ်ကနေ နေရာလွတ် 15px တွန်းချပေးခြင်း
+                ft.Container(height=15), 
                 ft.Text("Kobelco RK250 Lift Planner", size=22, weight=ft.FontWeight.BOLD, color="blue")
             ])
         )
@@ -227,9 +227,9 @@ def main(page: ft.Page):
                 ft.Text("အခြေခံ သတ်မှတ်ချက်များ", weight=ft.FontWeight.BOLD, size=16),
                 outrigger_dd, area_dd, parts_in
             ]),
-            border=ft.border.all(1, ft.colors.GREY_400),
+            bgcolor="#f5f5f5",
             padding=10,
-            border_radius=5
+            border_radius=8
         )
 
         page.add(
